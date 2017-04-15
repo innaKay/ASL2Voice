@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" java-vm-args="-Djava.library.path=\Users\Inna\Downloads\LeapDeveloperKit_2.3.1+31549_win\LeapSDK\lib\x64 "  href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="ASLProgram.jar" size="6232309" download="eager" />
+    <jar href="ASLProgram.jar" size="6233298" download="eager" />
     <jar href="lib\LeapJava.jar" size="85041" download="eager" />
     <jar href="lib\cmu_us_kal.jar" size="4899359" download="eager" />
     <jar href="lib\cmulex.jar" size="599429" download="eager" />

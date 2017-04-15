@@ -15,6 +15,7 @@ public final class LeapEventHandler extends Listener {
 	private LeapEvent leapEvent;
 		
 	private LeapEventHandler() {
+                LeapApp.getController().setPolicy(Controller.PolicyFlag.POLICY_BACKGROUND_FRAMES);    
 		leapListeners = new CopyOnWriteArrayList<>();
 		leapEvent = new LeapEvent();
                 
@@ -37,7 +38,7 @@ public final class LeapEventHandler extends Listener {
 	}
 	
 	public static void fireFrameUpdate() {
-                LeapApp.getController().setPolicy(Controller.PolicyFlag.POLICY_BACKGROUND_FRAMES);
+                
 		SINGLETON.onFrame(LeapApp.getController());
 	}
 	

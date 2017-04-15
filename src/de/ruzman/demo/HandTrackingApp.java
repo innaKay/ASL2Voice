@@ -28,6 +28,7 @@ import javafx.collections.ObservableList;
 import javafx.event.EventType;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point3D;
+import javafx.geometry.Pos;
 import javafx.scene.Camera;
 import javafx.scene.Node;
 import javafx.scene.ParallelCamera;
@@ -73,7 +74,7 @@ public class HandTrackingApp extends Application implements PointMotionListener 
 		camera.setTranslateZ(-500);
 		camera.setTranslateY(-200);
 		//camera.setFarClip(1000);
-		camera.setFieldOfView(40);
+		camera.setFieldOfView(80);
 
                 //ROOT
                 AnchorPane root = new AnchorPane();
@@ -91,36 +92,38 @@ public class HandTrackingApp extends Application implements PointMotionListener 
                 root.setMaxSize(width, height-50);
                 
         
-                AnchorPane root1 = (AnchorPane) root.getChildren().get(0);
-              // System.out.println(root1.getChildren().get(0).);
-                root1.setPrefSize(width, height-50);
-                
-                AnchorPane root2 = ((AnchorPane) root1.getChildren().get(1));
-                
-
-                
+                SplitPane s = (SplitPane)((AnchorPane)((AnchorPane) root.getChildren().get(0)).getChildren().get(1)).getChildren().get(0);
+               // AnchorPane root2 = ((AnchorPane) root1.getChildren().get(1));
                 //Access Components of Main1.fxml
-               SplitPane s = ((SplitPane) root2.getChildren().get(0));
-               
+              // SplitPane s = ((SplitPane) root1.getChildren().get(0));
                                
 //                Integrate visualizer into BorderPane
-                SubScene subscene_visualizer = new SubScene(group,1000,1000);
+                SubScene subscene_visualizer = new SubScene(group, 300,500);
                 subscene_visualizer.setCamera(camera);
                 BorderPane vizualizer = new BorderPane();
-                vizualizer.setPrefSize(s.getWidth()/2, s.getHeight());
+                //vizualizer.setPrefSize(s.getWidth()/2, s.getHeight());
                 vizualizer.setCenter(group);
+                
                 
                //Component Access for Translate
                ObservableList<Node> translateComponentList = s.getItems();
-               AnchorPane panel = (AnchorPane) translateComponentList.get(0);
-               panel.getChildren().add(vizualizer);
-              
+//               AnchorPane panel 
+//               panel.getChildren().add(vizualizer);
+//              
+                AnchorPane panel = (AnchorPane) translateComponentList.get(0);
+//                panel.setPrefSize(width/2, height);
+//                panel.setCenterShape(true);
+                panel.getChildren().add(vizualizer);
+                vizualizer.setTranslateX(200);
+                
+//               SubScene subscene_visualizer = new SubScene(panel, 500, 500);               
+//               subscene_visualizer.setCamera(camera);
+               
                 //Set scene to root
-                scene = new Scene(root,width,height-50);
+                scene = new Scene(root,width,height);
                 //primaryStage.setResizable(false);
                 primaryStage.setTitle("American Sign Language to Voice");
 		primaryStage.setScene(scene);
-                primaryStage.sizeToScene();
 		primaryStage.show();
                 
 		//Visualizer components
@@ -142,9 +145,9 @@ public class HandTrackingApp extends Application implements PointMotionListener 
 		HandFX3D hand = new HandFX3D();
                 LeapApp.getController().setPolicy(Controller.PolicyFlag.POLICY_BACKGROUND_FRAMES);
                 hand.setRotate(30);
-                hand.setScaleX(2);
-                hand.setScaleY(2);
-                hand.setScaleZ(2);
+                hand.setScaleX(2.5);
+                hand.setScaleY(2.5);
+                hand.setScaleZ(2.5);
 		hands.put(event.getSource().id(), hand);
 		group.getChildren().add(hand);
                 
@@ -153,7 +156,6 @@ public class HandTrackingApp extends Application implements PointMotionListener 
 	
 	@Override
 	public void moved(PointEvent event) {
-                LeapApp.getController().setPolicy(Controller.PolicyFlag.POLICY_BACKGROUND_FRAMES);
 		int handId = event.getSource().id();
 		HandFX3D hand = hands.get(handId);
 		hand.update(LeapApp.getController().frame().hand(handId));
@@ -163,7 +165,6 @@ public class HandTrackingApp extends Application implements PointMotionListener 
 
 	@Override
 	public void leftViewport(PointEvent event) {
-                LeapApp.getController().setPolicy(Controller.PolicyFlag.POLICY_BACKGROUND_FRAMES);
 		int handId = event.getSource().id();
 		hands.remove(handId);
 		group.getChildren().remove(hands.get(handId));

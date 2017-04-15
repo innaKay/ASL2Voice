@@ -215,21 +215,29 @@ public class MainController implements Initializable {
     private void recordTRAIN(){
           if (signName !=null)
         {
+            
             try {
-            long curr_time = System.currentTimeMillis();
-            Timer timer = new Timer();
-            timer.scheduleAtFixedRate(new TimerTask(){ 
+                long curr_time = System.currentTimeMillis();
+                Timer timer = new Timer();
+                timer.scheduleAtFixedRate(new TimerTask(){ 
                 @Override
                 public void run(){
                             try {
                                 if (ASLtoVoiceMain.RecordTrain(signName.getText()))
                                 {                     
-                                    feedback.setText("Captured");
+                                    Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        feedback.setText("Captured");
+                                    }
+                                    
+                                    });
                                     signContainer.setVisible(false);
                                     saveContainer.setVisible(true); 
-                                   
-                                    System.out.println("Platform response: "+ Platform.isFxApplicationThread());
-                                    Platform.isFxApplicationThread();
+//                                   
+//                                    System.out.println("Platform response: "+ Platform.isFxApplicationThread());
+//                                    Platform.isFxApplicationThread();
+                                    
                                     timer.cancel();
                                     
                                 }
@@ -240,6 +248,7 @@ public class MainController implements Initializable {
              
                 }
         },0, 100);
+            
         }  
         
           catch(Exception e){
@@ -290,12 +299,17 @@ public class MainController implements Initializable {
                 public void run(){
                    try {
                                 if (ASLtoVoiceMain.RecordTest())
-                                {                           
-                                    feedback.setText(ASLtoVoiceMain.getSignName());
-                                    aslInterpreter.Say(feed);
-                                    //feedback.setText("Captured");
+                                {   
+                                    Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        //feedback.setText("Captured");
+                                        feedback.setText(ASLtoVoiceMain.getSignName());
+                                        aslInterpreter.Say(feed);
+                                    }
+                                    
+                                    });
                                     timer.cancel();
-                                    feedback.setText("Captured");
                                 }
                             }
                             catch (InterruptedException | IOException ex ) {
